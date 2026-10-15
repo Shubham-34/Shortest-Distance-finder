@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Shortest Route Finder</title>
+  <meta name="description" content="Pick a start and destination on the college campus map and get the shortest walking route, calculated with Dijkstra's algorithm.">
+  <meta name="theme-color" content="#14a04b">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="College Shortest Route Finder">
+  <meta property="og:description" content="Campus ki do buildings ke beech sabse chhota route, Dijkstra algorithm se.">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <h1>🎓 College Shortest Route Finder</h1>
+      <p class="lede">To Find a Shortest Path.</p>
+    </header>
+
+    <!-- Route selection -->
+    <section class="panel" aria-label="Route selection">
+      <form class="controls" id="form">
+        <div class="field">
+          <label class="label" for="from">Starting Location</label>
+          <select id="from"></select>
+        </div>
+        <button type="button" class="swap" id="swap" aria-label="Swap start and destination" title="Swap">⇄</button>
+        <div class="field">
+          <label class="label" for="to">Destination</label>
+          <select id="to"></select>
+        </div>
+        <button type="submit" class="go" id="go">Find Shortest Route</button>
+      </form>
+    </section>
+
+    <!-- Campus map (SVG is drawn by js/map.js) -->
+    <section class="panel" aria-label="Campus map">
+      <div class="map-head">
+        <h2>🗺️ Campus map</h2>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--start);border-color:var(--start)"></i>Start</span>
+          <span><i class="dot" style="background:var(--end);border-color:var(--end)"></i>Destination</span>
+          <span><i class="sw" style="background:var(--route)"></i>Shortest route</span>
+          <span><i class="sw" style="background:var(--road)"></i>Footpath (metres)</span>
+        </div>
+      </div>
+      <div class="mapbox">
+        <svg id="map" viewBox="0 0 780 520" role="img" aria-label="Campus map with footpaths and distances in metres"></svg>
+      </div>
+      <p class="hint">Map ko left-right swipe karke poora dekho.</p>
+    </section>
+
+    <!-- Result (filled by js/app.js) -->
+    <section class="panel result" aria-live="polite" id="result"></section>
+
+    <!-- Algorithm explanation -->
+<section class="panel explain">
+  <h2>Algorithm Explanation</h2>
+
+  <p style="max-width:70ch">
+    Dijkstra's algorithm finds the shortest path from a starting point to all
+    other points in a weighted graph. Here, each building is a node, each
+    footpath is an edge, and the edge weight is the distance in metres.
+  </p>
+
+  <ol>
+    <li>Set the distance of the starting building to <code>0</code> and all other buildings to <code>∞</code>.</li>
+
+    <li>Choose the unvisited building with the smallest distance.</li>
+
+    <li>
+      Check all its nearby buildings. If
+      <code>current distance + path length</code>
+      is smaller than the old distance, update the distance.
+    </li>
+
+    <li>Mark the selected building as visited. Its distance is now final.</li>
+
+    <li>
+      When the destination is reached, stop. Follow the saved path backwards
+      to get the complete shortest route.
+    </li>
+  </ol>
+
+  <h3>Order in which buildings were visited</h3>
+
+  <div class="tablewrap">
+    <table id="trace"></table>
+  </div>
+</section>
+
+  </div>
+
+  <!-- Scripts: order matters (data -> algorithm -> map -> app) -->
+  <script src="js/data.js"></script>
+  <script src="js/dijkstra.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
